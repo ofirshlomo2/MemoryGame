@@ -5,6 +5,7 @@
   timerDiv : document.getElementById('timer'),
   movesDiv : document.getElementById('moves'),
   levels : document.getElementById('levels'),
+  modal : document.getElementById('modal'),
 };
 
 let setTimer = 0;
@@ -76,8 +77,12 @@ function setGameLevel(levels){
 	levels.map(l => {
     const li = document.createElement('li');
     li.className = "fa fa-star";
-	li.id = l.id
-	li.innerHTML = l.name
+	li.id = l.id;
+	li.innerHTML = l.name;
+	li.addEventListener('click' , ()=> {
+		console.log('level:' ,l.name) // add level selctore
+		initBoard(l.id);
+	})
 	level.append(li)
 	})
 
@@ -104,9 +109,31 @@ function initCards(count) {
 
 
 function initBoard(level) {
+if(level == 'easy'){
+	rowsNumber =6;
+	colNumber =6;
+}
   const count = rowsNumber * colNumber;
   cards = initCards(count);
   console.log(count);
+}
+
+function creatModal(){
+DOM.modal.append(modalDiv);
+
+const modalDiv = document.createElement('div');
+modalDiv.className ="modal-dialog";
+
+const modalHeader = document.createElement('div');
+modalHeader.className = "modal-header";
+
+const modalBody = document.createElement('div');
+modalBody.className =" modal-body";
+
+const modalFooter = document.createElement('div');
+modalFooter.className = "modal-footer";
+modalDiv.append(modalHeader , modalBody, modalFooter)
+
 }
 
 
@@ -161,7 +188,7 @@ function handleTurn(event, clickedCard) {
 		// first click
 		// canPlay = false;
 		if(setTimer == 0) {
-			return alert("start timer")
+			return alert("start timer") // start timer
 		}
 		
 		toogleCard(event.currentTarget);
@@ -179,7 +206,9 @@ function handleTurn(event, clickedCard) {
 			if (score === size / 2) {
 				setTimeout(() => {
 					alert('game over'); // add modal
+					creatModal();
 				});
+				timer._stop();
 			}
 				selectedCard = null;
 		} else { 
