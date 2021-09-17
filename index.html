@@ -27,12 +27,16 @@
 			  <li class="star"><i class="fa fa-star"></i></li>
 			  <li class="star"><i class="fa fa-star"></i></li>
 			</ul>
+
 			<span class="moves-counter">0</span> Moves
 			<div class="timer-container">
-			  <span class="timer"><i class="fa fa-hourglass-start"></i> Timer: 00:00</span>
+				<div id="timer">0</div>
 			</div>
+
 			<div class="reset">
-			  <button class="btn reset-btn">Reset <i class="fa fa-repeat"></i></button>
+			  <button class="btn reset-btn" onclick="timer._reset()">Reset <i class="fa fa-repeat"></i></button>
+			  <button class="btn reset-btn" onclick="timer._start()">Start <i class="fa fa-repeat"></i></button>
+			  <button class="btn reset-btn" onclick="timer._stop()">Puse <i class="fa fa-repeat"></i></button>
 			</div>
 		  </section>
 	 

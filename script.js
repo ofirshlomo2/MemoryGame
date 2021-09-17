@@ -1,6 +1,7 @@
-DOM = {
+  const DOM = {
   appDiv : document.getElementById('app'),
   boardDiv : document.getElementById('board'),
+  timerDiv : document.getElementById('timer'),
 };
 
 let rowsNumber = 3;
@@ -8,6 +9,41 @@ let colNumber = 4;
 let selectedCard = null;
 const variants = ['html', 'css', 'js', 'react', 'vue', 'angular', 'redux', 'jest'];
 let cards = [];
+const timer = creatTimer()
+//timer._start();
+
+
+function creatTimer(){
+	let setTimer = 0;
+	let intervalId = null;
+	function _update(t){
+		setTimer = t; // timer state
+		DOM.timerDiv.innerHTML = t;
+	}
+	function _start() {
+		intervalId = setInterval(() => {
+			_update(setTimer + 1);
+		}, 1000);
+	}
+	function _stop(){
+		clearInterval(intervalId);
+	}
+	function _reset(){
+		_stop();
+		_update(0);
+	}
+	function _restart() {
+		reset();
+		start();
+	}
+	return {
+		_start,
+		_stop,
+		_reset,
+		_restart,
+	};
+}
+
 
 function shuffle(array) {
   const result = [...array];
@@ -95,6 +131,7 @@ function handleTurn(event, clickedCard) {
 		if (selectedCard.value === clickedCard.value) {
 			// match
 			console.log('yes');
+			selectedCard = null;
 		} else {
 			// not match
 			const currentTarget = event.currentTarget;
