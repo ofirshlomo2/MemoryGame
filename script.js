@@ -71,6 +71,7 @@ function shuffle(array) {
 function setGameLevel(levels){
 	console.log(levels)
 	const level = _createElement("ul" , { className: "star"});
+	level.className =" star-rating";
 	DOM.levels.append(level);
 	levels.map(l => {
     const li = document.createElement('li');
