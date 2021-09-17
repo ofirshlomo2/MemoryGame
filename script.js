@@ -1,3 +1,4 @@
+  
   const DOM = {
   appDiv : document.getElementById('app'),
   boardDiv : document.getElementById('board'),
@@ -6,9 +7,12 @@
 
 let rowsNumber = 3;
 let colNumber = 4;
+let size = rowsNumber * colNumber;
 let selectedCard = null;
+let canPlay = true;
 const variants = ['html', 'css', 'js', 'react', 'vue', 'angular', 'redux', 'jest'];
 let cards = [];
+let score = 0;
 const timer = creatTimer()
 //timer._start();
 
@@ -105,6 +109,8 @@ function creatBoard(cards) {
 	cardDiv.append(cardBody)
 	
 	cardDiv.addEventListener('click' , event => {
+		if (cardDiv.classList.contains('active')) return;
+		if (!canPlay) return;
 		handleTurn(event, card);
 	})
 	cellDiv.append(cardDiv);
@@ -123,22 +129,40 @@ function handleTurn(event, clickedCard) {
 	console.log('selectedCard', selectedCard);
 	if (!selectedCard) {
 		// first click
+		canPlay = false;
+		if(setTimer === 0) {
+			return alert("start timer")
+		}
+		else {
+		canPlay = true;
 		toogleCard(event.currentTarget);
 		selectedCard = clickedCard;
+		}
+		
 	} else {
 		toogleCard(event.currentTarget);
 		// second click
 		if (selectedCard.value === clickedCard.value) {
 			// match
+			score ++
 			console.log('yes');
-			selectedCard = null;
-		} else {
+			console.log('score', score);
+			if (score === size / 2) {
+				setTimeout(() => {
+					alert('game over'); // add modal
+				});
+			}
+				// TODO: check if game over
+				selectedCard = null;
+		} else { 
 			// not match
 			const currentTarget = event.currentTarget;
+			canPlay = false;
 			setTimeout(() => {
 				toogleCard(currentTarget);
 				const prevCard = document.getElementById(`card-${selectedCard.id}`);
 				toogleCard(prevCard);
+				canPlay = true;
 				selectedCard = null;
 			}, 1000);
 		}
