@@ -3,14 +3,19 @@
   appDiv : document.getElementById('app'),
   boardDiv : document.getElementById('board'),
   timerDiv : document.getElementById('timer'),
+  movesDiv : document.getElementById('moves'),
+  levels : document.getElementById('levels'),
 };
 
+let setTimer = 0;
 let rowsNumber = 3;
 let colNumber = 4;
 let size = rowsNumber * colNumber;
 let selectedCard = null;
 let canPlay = true;
+let movesCouner = 0;
 const variants = ['html', 'css', 'js', 'react', 'vue', 'angular', 'redux', 'jest'];
+const levels = [{name:'Easy' , id:"easy"}, {name:"Medium",id:"medium"}, {name:'Ninja',id:"ninja"}];
 let cards = [];
 let score = 0;
 const timer = creatTimer()
@@ -18,7 +23,6 @@ const timer = creatTimer()
 
 
 function creatTimer(){
-	let setTimer = 0;
 	let intervalId = null;
 	function _update(t){
 		setTimer = t; // timer state
@@ -37,8 +41,8 @@ function creatTimer(){
 		_update(0);
 	}
 	function _restart() {
-		reset();
-		start();
+		_reset();
+		_start();
 	}
 	return {
 		_start,
@@ -48,6 +52,13 @@ function creatTimer(){
 	};
 }
 
+function creatMovesCounter(){
+	const score = _createElement("div", { className: "score" });
+	DOM.movesDiv.appendChild(score);
+	movesCouner++
+	DOM.movesDiv.innerHTML = movesCouner;
+}
+
 
 function shuffle(array) {
   const result = [...array];
@@ -55,6 +66,23 @@ function shuffle(array) {
     return Math.random() - 0.5;
   });
 }
+
+
+function setGameLevel(levels){
+	console.log(levels)
+	const level = _createElement("ul" , { className: "star"});
+	DOM.levels.append(level);
+	levels.map(l => {
+    const li = document.createElement('li');
+    li.className = "fa fa-star";
+	li.id = l.id
+	li.innerHTML = l.name
+	level.append(li)
+	})
+
+}
+
+setGameLevel(levels);
 
 function initCards(count) {
   const size = count / 2;
@@ -127,17 +155,17 @@ function toogleCard(cardDiv) {
 function handleTurn(event, clickedCard) {
 	console.log('clickedCard', clickedCard);
 	console.log('selectedCard', selectedCard);
+	creatMovesCounter()
 	if (!selectedCard) {
 		// first click
-		canPlay = false;
-		if(setTimer === 0) {
+		// canPlay = false;
+		if(setTimer == 0) {
 			return alert("start timer")
 		}
-		else {
-		canPlay = true;
+		
 		toogleCard(event.currentTarget);
 		selectedCard = clickedCard;
-		}
+		
 		
 	} else {
 		toogleCard(event.currentTarget);
@@ -152,7 +180,6 @@ function handleTurn(event, clickedCard) {
 					alert('game over'); // add modal
 				});
 			}
-				// TODO: check if game over
 				selectedCard = null;
 		} else { 
 			// not match
