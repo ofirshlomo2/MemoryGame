@@ -13,7 +13,7 @@
 	transition: transform 0.6s;
 	transform-style: preserve-3d;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-   cursor: pointer;
+	cursor: pointer;
 }
 
 .flip-card.active .flip-card-inner {
@@ -30,8 +30,11 @@
 }
 
 .flip-card-front {
-	background-color: #2980b9;
 	color: black;
+	background-color: #e5e5f7;
+	opacity: 0.8;
+	background-image: var(--card-bg);
+	background-blend-mode: multiply;
 }
 
 .flip-card-back {
