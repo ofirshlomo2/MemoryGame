@@ -1,13 +1,12 @@
-export function creatTimer({ targetEl }) {
+export function creatTimer({ targetEl }) { // timers creatores 
 	// private
 	let intervalId = null;
 	let timer = 0;
-
 	function _update(t) {
 		timer = t; // timer state
 		targetEl.innerHTML = t;
 	}
-	// public
+	// public functions
 	function start() {
 		intervalId = setInterval(() => {
 			_update(timer + 1);
@@ -24,7 +23,6 @@ export function creatTimer({ targetEl }) {
 		reset();
 		start();
 	}
-
 	function getTime() {
 		return timer;
 	}
@@ -37,6 +35,7 @@ export function creatTimer({ targetEl }) {
 	};
 }
 
+
 export function Counter(target) {
 	let movesCouner = 0;
 
@@ -44,19 +43,17 @@ export function Counter(target) {
 		movesCouner++;
 		target.innerHTML = movesCouner;
 	}
-
 	function reset() {
 		movesCouner = 0;
 		target.innerHTML = movesCouner;
 	}
-
 	return {
 		add,
 		reset,
 	};
 }
 
-export function shuffle(array) {
+export function shuffle(array) { //shuffle the cards
 	const result = [...array];
 	return result.sort(() => {
 		return Math.random() - 0.5;
