@@ -18,10 +18,10 @@
 	background-color: #ddd;
 }
 
-#customers th {
+#customers  {
 	padding-top: 12px;
 	padding-bottom: 12px;
 	text-align: left;
-	background-color: #04aa6d;
+	background: linear-gradient(160deg, #3C384D 0%, #ffffff 450%);
 	color: white;
 }
