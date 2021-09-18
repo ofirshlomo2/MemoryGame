@@ -1,6 +1,5 @@
 import { creatTimer, Counter, shuffle } from './utils.js';
 
-let mode = 'light'; // light | dark
 
 const config = {
 	light: {
@@ -11,7 +10,7 @@ const config = {
 	},
 };
 
-export function MemoryGame({ target, timerTarget, movesTarget, onGameOver }) {
+export function MemoryGame({ target, timerTarget, movesTarget, onGameOver }) { // creat new game 
 	const DOM = {
 		app: target,
 		timerEl: timerTarget,
@@ -27,6 +26,7 @@ export function MemoryGame({ target, timerTarget, movesTarget, onGameOver }) {
 	DOM.alert.style.display = "none"
 	DOM.alertgame.style.display = "none"
 
+	let mode = 'light'; // light | dark
 	let cards = [];
 	let size = 0;
 	let score = 0;
@@ -38,7 +38,10 @@ export function MemoryGame({ target, timerTarget, movesTarget, onGameOver }) {
 	let history = []; // games history
 	let isPaused = false;
 
-	function init(level) {
+	function init(level = selectedLevel) {
+		timer.reset();
+		mistakes = 0;
+		isGameStarted = false;
 		size = _getSize(level);
 		cards = initCards(size);
 		selectedLevel = level;
@@ -71,7 +74,9 @@ export function MemoryGame({ target, timerTarget, movesTarget, onGameOver }) {
 		canPlay = true; // wait until card flip end
 		isGameStarted = false;
 		mistakes = 0;
+		counter.reset()
 		init(selectedLevel);
+
 	}
 
 	function _handleTurn(event, clickedCard) {
@@ -81,11 +86,11 @@ export function MemoryGame({ target, timerTarget, movesTarget, onGameOver }) {
 			if (!isGameStarted) {
 				return DOM.alertgame.style.display = "block" 
 			}
-			
 			counter.add();
 			toogleCard(event.currentTarget);
 			selectedCard = clickedCard;
 		} else {
+			counter.add();
 			toogleCard(event.currentTarget);
 			// second click
 			if (selectedCard.value === clickedCard.value) {
@@ -124,15 +129,12 @@ export function MemoryGame({ target, timerTarget, movesTarget, onGameOver }) {
 
 	function _getSize(level) {
 		if (level == 'easy') return 12;
-
 		if (level == 'medium') return 18;
-
 		if (level == 'ninja') return 24;
 	}
 
 	function _creatBoard(cards) {
 		DOM.board.innerHTML = '';
-		console.log('cards', cards);
 		cards.forEach(card => {
 			const cellDiv = _createElement('div', {
 				className: `cell ${selectedLevel}`,
@@ -170,31 +172,38 @@ export function MemoryGame({ target, timerTarget, movesTarget, onGameOver }) {
 		});
 	}
 
+	function toggleMode(){
+		mode = mode === 'light' ? 'dark' : 'light';
+		return mode;
+	}
+
+	function initCards(count) { //creat cards
+		const variants = config[mode].variants;
+		const size = count / 2;
+		const options = variants.slice(0, size);
+		let items = new Array(count).fill({});
+		items = items.map((item, index) => {
+			console.log(index, size, index % size);
+			return {
+				value: options[index % size],
+				id: index,
+			};
+		});
+		const result = shuffle(items);
+		return result;
+	}
+
 	return {
 		init,
 		start,
 		stop,
 		resume,
 		restart,
+		toggleMode
 	};
 }
 
-function initCards(count) {
-	const variants = config[mode].variants;
-	const size = count / 2;
-	const options = variants.slice(0, size);
-	let items = new Array(count).fill({});
-	items = items.map((item, index) => {
-		console.log(index, size, index % size);
-		return {
-			value: options[index % size],
-			id: index,
-		};
-	});
-	const result = shuffle(items);
-	console.log('result', result);
-	return result;
-}
+
 
 function _createElement(tag, props) {
 	const element = document.createElement(tag);

@@ -50,9 +50,6 @@ export function Counter(target) {
 		target.innerHTML = movesCouner;
 	}
 
-	function add() {}
-	function reset() {}
-
 	return {
 		add,
 		reset,

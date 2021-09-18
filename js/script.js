@@ -2,7 +2,6 @@ import { MemoryGame } from './game.js';
 
 const DOM = {
 	appDiv: document.getElementById('app'),
-	movesDiv: document.getElementById('moves'),
 	levels: document.getElementById('levels'),
 	theme: document.getElementById('theme'),
 	resetBtn: document.getElementById('resetBtn'),
@@ -55,18 +54,16 @@ function updateHistory() {
 
 
 function addListeners() {
-	
 	DOM.theme.addEventListener('click', () => {
-		
+		const mode = game.toggleMode();
+		game.init();
 		document.documentElement.classList.toggle('dark');
-		mode = mode === 'light' ? 'dark' : 'light';
 		if(mode == 'dark'){
 			DOM.theme.innerHTML = 'Dark mode'
 		}
 		if(mode == 'light'){
-			DOM.theme.innerHTML = 'light mode'
+			DOM.theme.innerHTML = 'Light mode'
 		}
-
 		console.log(mode);
 	});
 	DOM.resetBtn.addEventListener('click', () => {
