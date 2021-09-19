@@ -59,10 +59,10 @@ function addListeners() {
 		game.init();
 		document.documentElement.classList.toggle('dark');
 		if(mode == 'dark'){
-			DOM.theme.innerHTML = 'Dark mode'
+			DOM.theme.innerHTML = 'Animals Cards'
 		}
 		if(mode == 'light'){
-			DOM.theme.innerHTML = 'Light mode'
+			DOM.theme.innerHTML = 'Developing Cards'
 		}
 		console.log(mode);
 	});
